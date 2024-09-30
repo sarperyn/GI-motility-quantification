@@ -1,0 +1,26 @@
+# Model config
+model_config:
+  class_path: src.models.unet.BaseUNet
+  input_size: (1, 256, 256)
+  out_size:   (1, 256, 256)
+
+# Dataset config
+dataset_config:
+  class_path: src.dataloader.dataloaders.MadisonStomach
+
+# Optimizer config
+optimizer_config:
+  class_path: torch.optim.AdamW
+  init_args:
+    lr: 0.0003
+    weight_decay: 0.0
+    eps: 1.0e-8
+    betas: [0.9, 0.999]
+
+#Scheduler config
+scheduler_config:
+  class_path: torch.optim.lr_scheduler.CosineAnnealingWarmRestarts
+
+metric_type: 'dice_coefficient'
+loss_type: 'classification'
+save_path: '/home/syurtseven/GI-motility-quantification/segmentation/results'
