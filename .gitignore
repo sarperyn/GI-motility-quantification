@@ -1,0 +1,8 @@
+/data
+/segmentation/notebooks
+/segmentation/results
+
+/generation/notebooks
+/generation/results
+
+*.pyc
