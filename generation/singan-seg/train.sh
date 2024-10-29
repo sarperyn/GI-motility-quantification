@@ -1,0 +1,1 @@
+python main_train.py --input_name case115_day0_slice_0075_4d.png --nc_z 4 --nc_im 4 --gpu_id 0
