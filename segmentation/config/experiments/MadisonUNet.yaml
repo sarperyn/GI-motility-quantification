@@ -6,7 +6,7 @@ model_config:
 
 # Dataset config
 dataset_config:
-  class_path: src.dataloader.dataloaders.MadisonStomach
+  class_path: src.dataloader.madison.MadisonStomach
 
 # Optimizer config
 optimizer_config:
@@ -23,4 +23,3 @@ scheduler_config:
 
 metric_type: 'dice_coefficient'
 loss_type: 'classification'
-save_path: '/home/syurtseven/GI-motility-quantification/segmentation/results'
