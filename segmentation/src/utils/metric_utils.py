@@ -1,13 +1,18 @@
 import numpy as np
 
-def dice_coefficient(pred, target, threshold=0.5):
 
-    pred = pred.detach().cpu().numpy()
-    target = target.detach().cpu().numpy()
+def compute_dice_score(preds, targets, smooth=1e-6):
 
-    pred = (pred > threshold).astype(np.uint8).flatten()
-    target = (target > threshold).astype(np.uint8).flatten()
-    
-    intersection = np.sum(pred * target)
-    return (2. * intersection) / (np.sum(pred) + np.sum(target) + 1e-6)
+    # Calculate Dice Score (2 * intersection / (union + smooth))
+    intersection = (preds * targets).sum()
+    union = preds.sum() + targets.sum()
+    dice = (2. * intersection + smooth) / (union + smooth)
+    return dice.item()
 
+def compute_dice_score_np(preds, targets, smooth=1e-6):
+
+    # Calculate Dice Score (2 * intersection / (union + smooth))
+    intersection = np.sum(preds * targets)
+    union = np.sum(preds) + np.sum(targets)
+    dice = (2. * intersection + smooth) / (union + smooth)
+    return dice
