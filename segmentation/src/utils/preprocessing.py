@@ -5,7 +5,7 @@ import glob
 import yaml
 import umap
 
-from src.utils.variable_utils import MADISON_STOMACH
+from src.utils.variable_utils import TRAIN_SET
 from src.utils.model_utils import *
 
 from sklearn.model_selection import train_test_split  
@@ -14,7 +14,7 @@ from sklearn.decomposition import PCA
 
 
     
-def load_images_from_folder(dataset=MADISON_STOMACH, 
+def load_images_from_folder(dataset=TRAIN_SET, 
                             mode='train', 
                             n_samples=1000, 
                             target_resize=None, 

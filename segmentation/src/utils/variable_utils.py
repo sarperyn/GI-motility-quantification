@@ -1,5 +1,6 @@
-
-MADISON_DATA   = '/home/syurtseven/gsoc-2024/data/madison'
-BRAIN_DATA     = '/home/syurtseven/gsoc-2024/data/brain'
+# Path for saving plots
 PLOT_DIRECTORY = '/home/syurtseven/gsoc-2024/reports'
-MADISON_STOMACH = '/home/syurtseven/GI-motility-quantification/data/madison-stomach'
+
+# Paths for training and validation data
+TRAIN_SET = '/Users/elizabethnemeti/Documents/GitHub/GI-motility-quantification/data/TRAINING-LOO'
+VAL_SET = '/Users/elizabethnemeti/Documents/GitHub/GI-motility-quantification/data/VALIDATION-LOO'

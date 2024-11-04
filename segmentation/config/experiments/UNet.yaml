@@ -1,4 +1,4 @@
-# Model config
+# configures the Unet model
 model_config:
   class_path: src.models.unet.BaseUNet
   input_size: (1, 256, 256)
