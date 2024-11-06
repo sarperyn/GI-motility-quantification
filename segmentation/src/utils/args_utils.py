@@ -39,7 +39,9 @@ def unet_arg_parser():
                          "while decreasing it will result in a smaller, lighter model. ")
 
     parser.add_argument('--model_path', type=str, default='', 
-                        help="Path to a pre-trained model file to load for training or evaluation. Leave blank if not used.")
+                        help="Path to a pre-trained model file to load for training or evaluation. "
+                        "Leave blank if mode is not test. "
+                        "If mode is test, you can also leave blank but you should provide exp_id to choose the latest model trined.")
     
     parser.add_argument('--mode', type=str, required=True, 
                         help="Operational mode of the script. Set to 'train' for training or 'test' for evaluation.")
