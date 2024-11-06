@@ -16,7 +16,7 @@ from src.utils.model_utils import *
 
 
 class BaseUNet(nn.Module):
-    def __init__(self, in_channels=1, out_channels=1):
+    def __init__(self, in_channels=1, out_channels=1, base_channel=64):
         super(BaseUNet, self).__init__()
         
         def CBR(in_channels, out_channels):
@@ -29,25 +29,25 @@ class BaseUNet(nn.Module):
                 nn.ReLU(inplace=True)
             )
         
-        self.encoder1 = CBR(in_channels, 64)
-        self.encoder2 = CBR(64, 128)
-        self.encoder3 = CBR(128, 256)
-        self.encoder4 = CBR(256, 512)
+        self.encoder1 = CBR(in_channels, base_channel)
+        self.encoder2 = CBR(base_channel, base_channel * 2)
+        self.encoder3 = CBR(base_channel * 2, base_channel * 4)
+        self.encoder4 = CBR(base_channel * 4, base_channel * 8)
         
         self.pool = nn.MaxPool2d(2)
         
-        self.bottleneck = CBR(512, 1024)
+        self.bottleneck = CBR(base_channel * 8, base_channel * 16)
         
-        self.upconv4 = nn.ConvTranspose2d(1024, 512, kernel_size=2, stride=2)
-        self.decoder4 = CBR(1024, 512)
-        self.upconv3 = nn.ConvTranspose2d(512, 256, kernel_size=2, stride=2)
-        self.decoder3 = CBR(512, 256)
-        self.upconv2 = nn.ConvTranspose2d(256, 128, kernel_size=2, stride=2)
-        self.decoder2 = CBR(256, 128)
-        self.upconv1 = nn.ConvTranspose2d(128, 64, kernel_size=2, stride=2)
-        self.decoder1 = CBR(128, 64)
+        self.upconv4 = nn.ConvTranspose2d(base_channel * 16, base_channel * 8, kernel_size=2, stride=2)
+        self.decoder4 = CBR(base_channel * 16, base_channel * 8)
+        self.upconv3 = nn.ConvTranspose2d(base_channel * 8, base_channel * 4, kernel_size=2, stride=2)
+        self.decoder3 = CBR(base_channel * 8, base_channel * 4)
+        self.upconv2 = nn.ConvTranspose2d(base_channel * 4, base_channel * 2, kernel_size=2, stride=2)
+        self.decoder2 = CBR(base_channel * 4, base_channel * 2)
+        self.upconv1 = nn.ConvTranspose2d(base_channel * 2, base_channel, kernel_size=2, stride=2)
+        self.decoder1 = CBR(base_channel * 2, base_channel)
         
-        self.conv_last = nn.Conv2d(64, out_channels, kernel_size=1)
+        self.conv_last = nn.Conv2d(base_channel, out_channels, kernel_size=1)
     
     def forward(self, x):
         enc1 = self.encoder1(x)
@@ -196,7 +196,7 @@ def test_model(model, test_loader, criterion, device, save_path, args):
             dice_score = compute_dice_score(masks, preds)
             dice_scores.append(dice_score)
 
-            if batch_idx % 2 == 0:
+            if batch_idx % 4 == 0:
                 visualize_predictions(images, masks, outputs, 
                                     save_path=save_path, 
                                     epoch='test', 

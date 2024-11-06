@@ -13,7 +13,7 @@ def unet_arg_parser():
                         help="Identifier for the experiment, used to create subdirectories for results.")
 
     parser.add_argument('--wandb', action='store_true', 
-                        help="If set, enables logging with Weights & Biases (WandB) for experiment tracking.")
+                        help="If set, enables logging with Weights & Biases (WandB) for experiment tracking.") # this is not working rn
 
     parser.add_argument('--seed', type=int, default=42, 
                         help="Random seed for reproducibility of results.")
@@ -31,10 +31,12 @@ def unet_arg_parser():
                         help="Path to the configuration file with additional settings for the experiment.")
 
     parser.add_argument('--save_dir', type=str, default='/home/syurtseven/GI-motility-quantification/segmentation/results/UNet', 
-                        help="Directory where the results and model files will be saved.")
+                        help="Directory where the results and model files will be saved. Change for your experiment directory.")
 
-    parser.add_argument('--n_samples', type=int, default=30, 
-                        help="Number of samples to be loaded from the dataset.")
+    parser.add_argument('--base_channel', type=int, default=64, 
+                        help="The base number of channels/filters in the model layers. "
+                         "Increasing this value will increase the model's complexity and parameter count, "
+                         "while decreasing it will result in a smaller, lighter model. ")
 
     parser.add_argument('--model_path', type=str, default='', 
                         help="Path to a pre-trained model file to load for training or evaluation. Leave blank if not used.")
