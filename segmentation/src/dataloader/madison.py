@@ -24,7 +24,6 @@ class MadisonStomach(MainDatasetClass):
         self.transform, self.mask_transform = self.transformation()
         self.augmentations = self.augmentation() if mode=='train' else None
             
-    
     def __len__(self) -> int:
         return len(self.image_paths)
 

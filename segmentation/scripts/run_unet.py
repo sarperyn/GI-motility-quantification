@@ -1,5 +1,6 @@
 import os
 import sys
+import glob
 sys.path.append(os.path.dirname(os.getcwd()))
 
 from torch.utils.data import DataLoader
@@ -21,7 +22,7 @@ if __name__ == '__main__':
 
     save_path  = os.path.join(args.save_dir, args.exp_id)
 
-    model = model_class(in_channels=1, out_channels=1)
+    model = model_class(in_channels=1, out_channels=1, base_channel=args.base_channel)
     
     if args.mode == 'train':
          
@@ -60,11 +61,12 @@ if __name__ == '__main__':
         test_loader  = DataLoader(test_dataset, batch_size=args.bs, shuffle=False) 
 
         try:
-            model.load_state_dict(torch.load(os.path.join(args.save_dir, args.exp_id, 'model','*.pt'), map_location=args.device))
-        except:
             model.load_state_dict(torch.load(args.model_path, map_location=args.device))
+        except:
+            model.load_state_dict(torch.load(sorted(glob.glob(os.path.join(args.save_dir, args.exp_id, 'model','*.pt')))[-1], map_location=args.device))
+
             
-        test_model(modle=model, 
+        test_model(model=model.to(args.device), 
                    test_loader=test_loader, 
                    criterion=criterion, 
                    device=args.device, 

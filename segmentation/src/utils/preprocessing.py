@@ -92,3 +92,4 @@ def dim_reduction(data, n_components=30, method='pca'):
     print("Dimension reduction is applied.")
 
     return data_low
+
