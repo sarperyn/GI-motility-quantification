@@ -155,6 +155,62 @@ def visualize_predictions2(images, masks, outputs, save_path, batch_idx):
     plt.show()
 
 
+def visualize_predictions_3d(images, masks, outputs, save_path, epoch, batch_idx, slice_indices=[10, 20, 30]):
+    images = images.cpu().numpy()
+    masks = masks.cpu().numpy()
+    outputs = torch.sigmoid(outputs).cpu().numpy()
+
+    bs = images.shape[0]
+    bs = bs if bs <= 5 else 5  # Limit to 5 samples for display
+
+    images = images[:bs]
+    masks = masks[:bs]
+    outputs = outputs[:bs]
+
+    num_slices = len(slice_indices)
+    fig, axs = plt.subplots(num_slices, bs * 3, figsize=(15, 6))
+
+    for i in range(bs):
+        for j, slice_idx in enumerate(slice_indices):
+            axs[j, i * 3].imshow(images[i, 0, slice_idx], cmap='gray')
+            axs[j, i * 3].axis('off')
+            axs[j, i * 3 + 1].imshow(masks[i, 0, slice_idx], cmap='gray')
+            axs[j, i * 3 + 1].axis('off')
+            axs[j, i * 3 + 2].imshow(outputs[i, 0, slice_idx] > 0.5, cmap='gray')
+            axs[j, i * 3 + 2].axis('off')
+
+    plt.suptitle(f'Batch {batch_idx} Predictions - Slices {slice_indices}')
+    plt.savefig(os.path.join(save_path, f'fig_{epoch}_{batch_idx}.jpg'), format='jpg', bbox_inches='tight', pad_inches=0, dpi=100)
+    plt.tight_layout()
+    plt.show()
+
+def visualize_predictions_mip(images, masks, outputs, save_path, epoch, batch_idx):
+    images = images.cpu().numpy()
+    masks = masks.cpu().numpy()
+    outputs = torch.sigmoid(outputs).cpu().numpy()
+
+    bs = images.shape[0]
+    bs = bs if bs <= 5 else 5
+
+    images = images[:bs]
+    masks = masks[:bs]
+    outputs = outputs[:bs]
+
+    fig, axs = plt.subplots(3, bs, figsize=(10, 6))
+    
+    for i in range(bs):
+        axs[0, i].imshow(np.max(images[i][0], axis=0), cmap='gray')
+        axs[0, i].axis('off')
+        axs[1, i].imshow(np.max(masks[i][0], axis=0), cmap='gray')
+        axs[1, i].axis('off')
+        axs[2, i].imshow(np.max(outputs[i][0] > 0.5, axis=0), cmap='gray')
+        axs[2, i].axis('off')
+    
+    plt.suptitle(f'Batch {batch_idx} MIP Predictions')
+    plt.savefig(os.path.join(save_path, f'fig_{epoch}_{batch_idx}_mip.jpg'), format='jpg', bbox_inches='tight', pad_inches=0, dpi=100)
+    plt.tight_layout()
+    plt.show()
+
 def plot_metric(x, label, plot_dir, args, metric):
     plt.figure()
     plt.plot(x, label=label)
