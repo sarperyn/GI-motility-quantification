@@ -54,7 +54,5 @@ def run_tmux_commands(python_commands, session_names):
         subprocess.run(python_commands[i])
 
 
-
-
 if __name__ == '__main__':
     run_generation()
